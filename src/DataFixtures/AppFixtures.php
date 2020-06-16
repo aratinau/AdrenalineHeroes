@@ -21,7 +21,6 @@ class AppFixtures extends Fixture
             $product = new Product();
             $product->setName($fakeProduct['name']);
             $product->setPrice($fakeProduct['price']);
-            $product->setRentTimeByMinute($fakeProduct['rent_time_by_minute']);
             $product->setQuantity($quantity);
             $manager->persist($product);
         }
@@ -45,27 +44,22 @@ class AppFixtures extends Fixture
             array(
                 "name" => "trekking backpack",
                 "price" => 4,
-                "rent_time_by_minute" => self::MINUTE_BY_DAY,
             ),
             array(
                 "name" => "tent",
                 "price" => 4.5,
-                "rent_time_by_minute" => self::MINUTE_BY_DAY
             ),
             array(
                 "name" => "sleeping bag",
                 "price" => 2.5,
-                "rent_time_by_minute" => self::MINUTE_BY_DAY
             ),
             array(
                 "name" => "sleeping mattress",
                 "price" => 1.5,
-                "rent_time_by_minute" => self::MINUTE_BY_DAY
             ),
             array(
                 "name" => "frontal headlamp",
                 "price" => 0.5,
-                "rent_time_by_minute" => self::MINUTE_BY_DAY
             ),
         );
     }

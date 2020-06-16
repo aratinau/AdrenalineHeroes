@@ -37,11 +37,6 @@ class Product
     /**
      * @ORM\Column(type="integer")
      */
-    private $rent_time_by_minute;
-
-    /**
-     * @ORM\Column(type="integer")
-     */
     private $quantity;
 
     /**
@@ -79,18 +74,6 @@ class Product
     public function setPrice(float $price): self
     {
         $this->price = $price;
-
-        return $this;
-    }
-
-    public function getRentTimeByMinute(): ?int
-    {
-        return $this->rent_time_by_minute;
-    }
-
-    public function setRentTimeByMinute(int $rent_time_by_minute): self
-    {
-        $this->rent_time_by_minute = $rent_time_by_minute;
 
         return $this;
     }
