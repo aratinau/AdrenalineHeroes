@@ -4,6 +4,7 @@ namespace App\DataFixtures;
 
 use App\Entity\Product;
 use App\Entity\Promotion;
+use App\Entity\RentedProduct;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
 
@@ -22,6 +23,17 @@ class AppFixtures extends Fixture
             $product->setName($fakeProduct['name']);
             $product->setPrice($fakeProduct['price']);
             $product->setQuantity($quantity);
+            if ($quantity > 1) {
+                $rentedProduct = new RentedProduct();
+
+                $from = new \DateTime("2020-06-16");
+                $to = new \DateTime("2020-06-18");
+
+                $rentedProduct->setRentFrom($from);
+                $rentedProduct->setRentTo($to);
+                $rentedProduct->setProduct($product);
+                $manager->persist($rentedProduct);
+            }
             $manager->persist($product);
         }
 

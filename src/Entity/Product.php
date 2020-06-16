@@ -3,17 +3,12 @@
 namespace App\Entity;
 
 use App\Repository\ProductRepository;
-use ApiPlatform\Core\Annotation\ApiResource;
-use ApiPlatform\Core\Annotation\ApiFilter;
-use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
-use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\RangeFilter;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass=ProductRepository::class)
- * @ApiResource()
- * @ApiFilter(DateFilter::class, properties={"rent_from", "rent_to"})
- * @ApiFilter(RangeFilter::class, properties={"quantity"})
  */
 class Product
 {
@@ -40,14 +35,14 @@ class Product
     private $quantity;
 
     /**
-     * @ORM\Column(type="datetime", nullable=true)
+     * @ORM\OneToMany(targetEntity=RentedProduct::class, mappedBy="product")
      */
-    private $rent_from;
+    private $rentedProducts;
 
-    /**
-     * @ORM\Column(type="datetime", nullable=true)
-     */
-    private $rent_to;
+    public function __construct()
+    {
+        $this->rentedProducts = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -90,26 +85,33 @@ class Product
         return $this;
     }
 
-    public function getRentFrom(): ?\DateTimeInterface
+    /**
+     * @return Collection|RentedProduct[]
+     */
+    public function getRentedProducts(): Collection
     {
-        return $this->rent_from;
+        return $this->rentedProducts;
     }
 
-    public function setRentFrom(?\DateTimeInterface $rent_from): self
+    public function addRentedProduct(RentedProduct $rentedProduct): self
     {
-        $this->rent_from = $rent_from;
+        if (!$this->rentedProducts->contains($rentedProduct)) {
+            $this->rentedProducts[] = $rentedProduct;
+            $rentedProduct->setProduct($this);
+        }
 
         return $this;
     }
 
-    public function getRentTo(): ?\DateTimeInterface
+    public function removeRentedProduct(RentedProduct $rentedProduct): self
     {
-        return $this->rent_to;
-    }
-
-    public function setRentTo(?\DateTimeInterface $rent_to): self
-    {
-        $this->rent_to = $rent_to;
+        if ($this->rentedProducts->contains($rentedProduct)) {
+            $this->rentedProducts->removeElement($rentedProduct);
+            // set the owning side to null (unless already changed)
+            if ($rentedProduct->getProduct() === $this) {
+                $rentedProduct->setProduct(null);
+            }
+        }
 
         return $this;
     }

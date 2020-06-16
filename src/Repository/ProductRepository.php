@@ -23,14 +23,18 @@ class ProductRepository extends ServiceEntityRepository
     {
         $from = date_add($from, date_interval_create_from_date_string('2 days'));
         $to = date_add($to, date_interval_create_from_date_string('4 days'));
-        
+
         $qb = $this->createQueryBuilder('p');
         $qb
-            ->where('p.rent_from NOT BETWEEN :from AND :to')
-            ->andWhere('p.rent_to NOT BETWEEN :from AND :to')
-            ->orWhere('p.rent_from is null OR p.rent_to is null')
+            ->leftJoin('p.rentedProducts', 'r_from')
+            ->where('r_from.rent_from NOT BETWEEN :from AND :to')
+            ->leftJoin('p.rentedProducts', 'r_to')
+            ->where('r_to.rent_to NOT BETWEEN :from AND :to')
+
+            ->orWhere('r_from.rent_from is null OR r_to.rent_to is null')
+
             ->andWhere('p.quantity > 0')
-            ->setParameter('from', $from )
+            ->setParameter('from', $from)
             ->setParameter('to', $to)
         ;
         return $qb->getQuery()->getArrayResult();
