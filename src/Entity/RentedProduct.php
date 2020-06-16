@@ -2,19 +2,11 @@
 
 namespace App\Entity;
 
-use ApiPlatform\Core\Annotation\ApiResource;
-use ApiPlatform\Core\Annotation\ApiFilter;
-use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
-use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\RangeFilter;
 use App\Repository\RentedProductRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ApiResource()
  * @ORM\Entity(repositoryClass=RentedProductRepository::class)
- * @ApiResource()
- * @ApiFilter(DateFilter::class, properties={"rent_from", "rent_to"})
- * @ApiFilter(RangeFilter::class, properties={"quantity"})
  */
 class RentedProduct
 {

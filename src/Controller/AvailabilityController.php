@@ -23,7 +23,7 @@ class AvailabilityController extends AbstractController
 
         $from = new \DateTime($datas["rent_from"]);
         $to = new \DateTime($datas["rent_to"]);
-        
+
         $products = $productRepository->getAvailableProducts($from, $to);
 
         return new JsonResponse($products);
