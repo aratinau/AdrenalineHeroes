@@ -18,7 +18,7 @@ class AppFixtures extends Fixture
         $fakeProducts = $this->getFakeProducts();
         foreach ($fakeProducts as $i => $fakeProduct)
         {
-            $quantity = ($i % 3 === 0) ? 0 : random_int(1, 100);
+            $quantity = ($i % 10 === 0) ? 0 : random_int(1, 100);
             $product = new Product();
             $product->setName($fakeProduct['name']);
             $product->setPrice($fakeProduct['price']);
@@ -26,11 +26,15 @@ class AppFixtures extends Fixture
             if ($quantity > 1) {
                 $rentedProduct = new RentedProduct();
 
-                $from = new \DateTime("2020-06-16");
-                $to = new \DateTime("2020-06-18");
+                $dates = $this->getRentedDate();
+                if ($i % 2 == 0) {
+                    $rentedProduct->setRentFrom($dates["rented_now"]["from"]);
+                    $rentedProduct->setRentTo($dates["rented_now"]["to"]);
+                } else {
+                    $rentedProduct->setRentFrom($dates["rented_next_month"]["from"]);
+                    $rentedProduct->setRentTo($dates["rented_next_month"]["to"]);
+                }
 
-                $rentedProduct->setRentFrom($from);
-                $rentedProduct->setRentTo($to);
                 $rentedProduct->setProduct($product);
                 $manager->persist($rentedProduct);
             }
@@ -48,6 +52,27 @@ class AppFixtures extends Fixture
         }
 
         $manager->flush();
+    }
+
+    private function getRentedDate()
+    {
+        $rented_now = new \DateTime();
+        date_add($rented_now, date_interval_create_from_date_string('7 days'));
+        $rented_next_month_from = new \DateTime();
+        date_add($rented_next_month_from, date_interval_create_from_date_string('30 days'));
+        $rented_next_month_to = new \DateTime();
+        date_add($rented_next_month_to, date_interval_create_from_date_string('60 days'));
+
+        return array(
+            "rented_now" => array(
+                "from" => (new \DateTime()),
+                "to" => $rented_now
+            ),
+            "rented_next_month" => array(
+                "from" => $rented_next_month_from,
+                "to" => $rented_next_month_to
+            )
+        );
     }
 
     private function getFakeProducts()

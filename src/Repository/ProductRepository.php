@@ -33,6 +33,9 @@ class ProductRepository extends ServiceEntityRepository
 
             ->orWhere('r_from.rent_from is null OR r_to.rent_to is null')
 
+            ->addSelect('r_from.rent_from')
+            ->addSelect('r_to.rent_to')
+
             ->andWhere('p.quantity > 0')
             ->setParameter('from', $from)
             ->setParameter('to', $to)
