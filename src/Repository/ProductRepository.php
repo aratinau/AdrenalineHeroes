@@ -21,6 +21,9 @@ class ProductRepository extends ServiceEntityRepository
 
     public function getAvailableProducts($from, $to)
     {
+        $from = date_add($from, date_interval_create_from_date_string('2 days'));
+        $to = date_add($to, date_interval_create_from_date_string('4 days'));
+        
         $qb = $this->createQueryBuilder('p');
         $qb
             ->where('p.rent_from NOT BETWEEN :from AND :to')
