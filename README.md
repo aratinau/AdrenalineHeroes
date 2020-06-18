@@ -3,11 +3,20 @@ Install
 
 `composer install`
 
-`bin/console doctrine:database:create`
-
 `bin/console doctrine:migration:migrate`
 
 `bin/console doctrine:fixtures:load`
+
+"Careful, database will be purged."
+
+answer `yes` 
+
+Run the project
+===============
+
+if symfony is not installed : `curl -sS https://get.symfony.com/cli/installer | bash`
+
+`symfony serve --no-tls`
 
 La fixture va créer 5 produits, un avec 0 quantité, deux utilisés cette semaine et deux autres utilisés le mois prochain
 
