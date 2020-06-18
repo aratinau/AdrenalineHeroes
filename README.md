@@ -9,13 +9,6 @@ Install
 
 `bin/console doctrine:fixtures:load`
 
-Run the project
-===============
-
-`symfony serve --no-tls`
-
-install symfony : `curl -sS https://get.symfony.com/cli/installer | bash`
-
 La fixture va créer 5 produits, un avec 0 quantité, deux utilisés cette semaine et deux autres utilisés le mois prochain
 
 Choices
